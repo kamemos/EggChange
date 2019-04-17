@@ -1,26 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter } from 'react-router-dom';
+import Route from "./routes";
+import { Navbar } from "./components";
+import { Provider } from "react-redux";
+import getStore from './redux/store'
 
 class App extends Component {
+  state = {
+    width: -1
+  }
+  onResize = (e) => {
+    if (this._isMounted) {
+      this.setState({ width: document.body.clientWidth })
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.onResize);
+    this._isMounted = true;
+    this.onResize();
+  }
+  componentWillUnmount() {
+    this._isMounted = false;
+    window.removeEventListener('resize', this.onResize);
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={getStore()}>
+        <Navbar windowWidth={this.state.width} />
+        <BrowserRouter>
+          <Route />
+        </BrowserRouter>
+      </Provider>
     );
   }
 }

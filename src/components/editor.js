@@ -1,14 +1,23 @@
 import React,{ Component } from 'react'
-import MediumEditor from 'medium-editor'
+// import MediumEditor from 'medium-editor'
 import styled from 'styled-components'
 import 'medium-editor/dist/css/medium-editor.min.css'
 import 'medium-editor/dist/css/themes/default.css'
+import Editor from 'react-medium-editor';
+
+// const BaseSize = 20;
+// const BaseRatio = {
+//     H1: (36/15),
+//     H2: (30/15),
+//     H3: (24/15),
+//     H4: (20/15),
+// }
 
 const Style = styled.div`
-
+    /* margin: 0px 10px; */
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 30px;
-    line-height: 20px;
+    line-height: 30px;
 
     h1 {
         font-size: 68px;
@@ -36,7 +45,8 @@ const Style = styled.div`
     }
     
     p {
-        margin-bottom: 40px;
+        /* margin-bottom: 40px; */
+        margin: 0px;
     }
     
     a {
@@ -72,19 +82,53 @@ const Style = styled.div`
     }
 `
 
-class Editor extends Component{
+class TextEditor extends Component{
 
-    componentDidMount(){
-        var editor = new MediumEditor('.editable')
+    // componentDidMount(){
+    //     var editor = new MediumEditor('.editable')
+    // }
+    state = {
+        text: ""
+    }
+
+    handleChange = (text, medium) => {
+        this.setState({ text: text });
+        if(this.props.onChange) {
+            this.props.onChange(text, medium);
+        }
     }
 
     render(){
         return (
             <Style>
-                <div  className='editable'/>
+                {
+                    // <div  className='editable'/>
+                }
+                <Editor
+                    tag="div"
+                    text={this.state.text}
+                    onChange={this.handleChange}
+                    options={{
+                        toolbar: {
+                            allowMultiParagraphSelection: true,
+                            buttons: ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote'],
+                            diffLeft: 0,
+                            diffTop: -10,
+                            firstButtonClass: 'medium-editor-button-first',
+                            lastButtonClass: 'medium-editor-button-last',
+                            relativeContainer: null,
+                            standardizeSelectionStart: false,
+                            static: false,
+                            /* options which only apply when static is true */
+                            align: 'center',
+                            sticky: false,
+                            updateOnEmptySelection: false
+                        }
+                    }}
+                />
             </Style>
         )
     }
 }
 
-export default Editor
+export default TextEditor
