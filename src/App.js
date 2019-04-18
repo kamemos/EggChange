@@ -28,7 +28,7 @@ class App extends Component {
       <Provider store={getStore()}>
         <Navbar windowWidth={this.state.width} />
         <BrowserRouter>
-          <Route />
+          <Route/>
         </BrowserRouter>
       </Provider>
     );
