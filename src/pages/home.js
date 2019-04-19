@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 // Redux stuff
 import connect from 'redux-connect-decorator';
-import { test } from '../redux/actions';
+import { test,user } from '../redux/actions';
 // Images
 import yolk from "../assets/Yolk.svg";
 import egg from "../assets/Egg-Gradient.svg";
@@ -99,10 +99,11 @@ section {
 @connect(state => ({
     test: state.test,
 }), {
-    ...test
+    ...test,
 })
 class Home extends Component {
     render() {
+        console.log(this.props)
         return (
             <Container>
                 <img className="yolk" src={yolk} alt="yolk" />

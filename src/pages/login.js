@@ -1,42 +1,46 @@
 import React,{ Component } from 'react'
 import axios from 'axios'
+import connect from 'redux-connect-decorator';
+import { user } from '../redux/actions';
+import { Redirect } from 'react-router'
+import { browserHistory } from 'react-router-dom';
 
+@connect(state => ({
+    user: state.user,
+}), {
+    ...user,
+})
 class Login extends Component{
     state = {
-        loading: true,
-        email: '',
-        jwt_token: ''
+        redirect: false
     }
-    
 
     async componentDidMount(){
         const params = new URLSearchParams(this.props.location.search)
         var email = params.get('email')
         var key = params.get('key')
-        // console.log( email,key )
+        console.log(email,key)
         try{
             var payload = (await axios.get(`https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/authen-via-key?email=${email}&key=${key}`)).data
-            if (payload.statusCode == 400) throw Error()
-            await this.setState({
-                loading:false,
-                email: payload.body['email'],
-                jwt_token: payload.body['jwt_token']
-            })
+            var { statusCode,body } = { ...payload }
+            console.log(payload)
+            if (statusCode === 400) throw Error()
+            await this.props.setEmail( body['email'] )
+            await this.props.setJWT( body['jwt_token'] )
+            alert("login success")
         } catch{
             alert("invalid params")
-            await this.setState({
-                loading:false,
-                jwt_token: 'error'
-            })
+        } finally{
+            this.setState({redirect:true})
         }
     }
 
     render(){
+        if (this.state.redirect) {
+            return <Redirect to='/'/>;
+        }
         return(
             <div>
-                email : {this.state.email}
-                <br/>
-                token : {this.state.jwt_token}
             </div>
         )
     }

@@ -26,8 +26,9 @@ class App extends Component {
   render() {
     return (
       <Provider store={getStore()}>
-        <Navbar windowWidth={this.state.width} />
         <BrowserRouter>
+          <Navbar windowWidth={this.state.width} />
+
           <Route/>
         </BrowserRouter>
       </Provider>

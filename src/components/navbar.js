@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Fade from 'react-reveal/Fade';
+import { user } from '../redux/actions';
+import { Link } from 'react-router-dom';
+import connect from 'redux-connect-decorator';
+import { Login } from "../pages";
 
 /*
 Color palette
@@ -68,6 +72,44 @@ article.menu {
 z-index: 52;
 `;
 
+const ChickButton = styled.div`
+    display: flex;
+    img.chick {
+        height: 30px;
+        width: 30px;
+    }
+    button {
+        font-size: 2vh;
+        padding: 5px;
+        box-sizing: border-box;
+        margin-botton: auto;
+        margin: 10px;
+        outline: none;
+        border: none;
+        background: #FCF4A3;
+    }
+`
+const LoginButton = ( user ) => {
+    let email = user.user.email
+    return (email === '') ? 
+        <ChickButton>
+            <Link to='/authen'>
+                <button className='button'>
+                    Login
+                </button>
+            </Link>
+        </ChickButton>:
+        <ChickButton>
+            <img className='chick' src={require('../assets/chick_icon.svg')}/>
+            {email}
+        </ChickButton>
+}
+
+@connect(state => ({
+    user: { ...state.user },
+}), {
+    ...user,
+})
 class Navbar extends Component {
     state = {
         isOpen: false
@@ -95,10 +137,11 @@ class Navbar extends Component {
                             />
                         </article>
                     </section>
+
                     <article className="menu">
                         <Fade collapse when={this.state.isOpen}>
                             <ul>
-                                <li>Option 1</li>
+                                <li><LoginButton user={this.props.user}/></li>
                                 <li>Option 2</li>
                                 <li>Option 3</li>
                             </ul>
