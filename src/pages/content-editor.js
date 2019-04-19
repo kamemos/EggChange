@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
-import { Editor } from '../components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Editor, Tags } from '../components'
 import axios from 'axios';
 import { user } from '../redux/actions';
 import connect from 'redux-connect-decorator';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
 
 // var editor = new MediumEditor('.editable')
 
@@ -37,49 +34,11 @@ const ContentBox = styled.div`
     min-width: 350px;
     margin-top: 40px;
 `
-const Row = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-`
-const TagsInput = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: flex-start;
-    flex-wrap: wrap;
-    margin-top: 15px;
-    div.tag {
-        padding: 5px;
-        background-color: #F8DE7E;
-        border-radius: 4px;
-        height: 30px;
-        min-width: 20px;
-        box-sizing: border-box;
-    }
-    div.input {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start
-        margin: 0 8px 0 8px;
-        input {
-            width: 80px
-            height: 30px;
-            border: none;
-            outline: none;
-            font-size: 2vh;
-        }
-        input[placeholder] { text-overflow: ellipsis; }
-        .button {
-            border: none;
-            outling: none;
-            padding: 5px;
-            
-        }
-        .button:hover {
-            filter: brightness(80%)
-        }
-    }
-`
+// const Row = styled.div`
+//     display: flex;
+//     align-items: center;
+//     justify-content: flex-start;
+// `
 const Button = styled.button`
     & {
         font-size: 3vh;
@@ -145,6 +104,48 @@ class ContentEditor extends Component {
             this.setState({isSubmitting:false})
         }
     }
+    onAddTag = (e) => {
+        e.preventDefault();
+        this.setState({
+            tag: '',
+            tags: (
+                this.state.tags.indexOf(this.state.tag.toUpperCase()) === -1 &&
+                this.state.tag.length > 0
+            ) ? [
+                ...this.state.tags, this.state.tag.toUpperCase()
+            ] : this.state.tags
+        });
+        return false;
+    }
+    onAddSuggestTag = (suggest) => () => {
+        this.setState({
+            tag: '',
+            tags: (
+                this.state.tags.indexOf(suggest.toUpperCase()) === -1 &&
+                this.state.tag.length > 0
+            ) ? [
+                    ...this.state.tags, suggest.toUpperCase()
+                ] : this.state.tags
+        });
+    }
+    onRemoveTag = (idx) => () => (
+        this.setState({
+            tags: [
+                ...this.state.tags.slice(0, idx),
+                ...this.state.tags.slice(idx + 1, this.state.tags.length)
+            ]
+        })
+    )
+    onUpdate = (key) => (e) => (
+        this.setState({
+            [key]: e.target.value
+        })
+    )
+    onUpdateText = (text, medium) => {
+        this.setState({
+            text: text
+        })
+    }
     render() {
         return (
             <Container>
@@ -156,40 +157,25 @@ class ContentEditor extends Component {
                 <ContentBox>
                     <Title 
                         value={this.state.title}
-                        onChange={(e)=>{this.setState({title:e.target.value})}} 
+                        onChange={this.onUpdate("title")}
                     />
-                    <TagsInput>
-                        {this.state.tags.map( (tag,idx) => {
-                            return (
-                                <>
-                                    <div className="tag"><b>{tag}</b></div>
-                                    <div style={{width:'8px'}}/>
-                                </>
-                            )
-                        })}
-                        <div className="input">
-                            <input
-                                value={this.state.tag}
-                                onChange={(e)=>{this.setState({tag:e.target.value})}}
-                                placeholder="add tag"
-                            />
-                            
-                            <FontAwesomeIcon  
-                                className="button"
-                                style={{height:'30px',color:'#FF4500'}} icon={faPlus} 
-                                onClick={()=>{this.setState({tags: [...this.state.tags,this.state.tag],tag:''})}}
-                            />      
-                        </div>
-                    </TagsInput>
+                    <Tags
+                        onAdd={this.onAddTag}
+                        onAddSuggest={this.onAddSuggestTag}
+                        onRemove={this.onRemoveTag}
+                        onUpdate={this.onUpdate}
+                        tag={this.state.tag}
+                        tags={this.state.tags}
+                    />
                     <Line/>
                     <Editor 
                         text={this.state.text}
-                        onChange={(text, medium)=>{this.setState({text:text});console.log(this.state)}}
+                        onChange={this.onUpdateText}
                     />
 
                     {/* <Line/> */}
                     <div style={{'display':'flex',justifyContent:'flex-end'}}>
-                        <Button onClick={this.submitContent.bind(this)}>Submit</Button>
+                        <Button onClick={this.submitContent}>Submit</Button>
                     </div>
                 </ContentBox>
             </Container>
