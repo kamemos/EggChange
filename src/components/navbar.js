@@ -6,7 +6,6 @@ import Fade from 'react-reveal/Fade';
 import { user } from '../redux/actions';
 import { Link } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
-import { Login } from "../pages";
 
 /*
 Color palette
@@ -74,6 +73,7 @@ z-index: 52;
 
 const ChickButton = styled.div`
     display: flex;
+    align-items: center;
     img.chick {
         height: 30px;
         width: 30px;
@@ -82,7 +82,7 @@ const ChickButton = styled.div`
         font-size: 2vh;
         padding: 5px;
         box-sizing: border-box;
-        margin-botton: auto;
+        margin-bottom: auto;
         margin: 10px;
         outline: none;
         border: none;
@@ -100,7 +100,7 @@ const LoginButton = ( user ) => {
             </Link>
         </ChickButton>:
         <ChickButton>
-            <img className='chick' src={require('../assets/chick_icon.svg')}/>
+            <img className='chick' alt="mascott" src={require('../assets/chick_icon.svg')}/>
             {email}
         </ChickButton>
 }

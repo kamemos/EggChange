@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import styled from "styled-components";
 import axios from 'axios'
 
-const Card = styled.div`
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    max-width: 600px;
-    width: 100vw;
-    height: 60vh
-`
+// const Card = styled.div`
+//     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+//     transition: 0.3s;
+//     max-width: 600px;
+//     width: 100vw;
+//     height: 60vh;
+// `
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -66,10 +66,10 @@ const ChatBubble = styled.div`
     }
 ` 
 
-const Row = styled.div`
-    display: flex;
-    justify-content: center;
-`
+// const Row = styled.div`
+//     display: flex;
+//     justify-content: center;
+// `
 
 const InputBox = styled.input`
     border: none;
@@ -77,21 +77,21 @@ const InputBox = styled.input`
     width: 100%;
     height: 60px;
     text-align: center;
-    background: rgba(255,255,255,.5)
+    background: rgba(255,255,255,.5);
 `
 
 const Button = styled.button`
     & {
         font-size: 1vh;
         box-sizing: border-box;
-        margin-botton: auto;
+        margin-bottom: auto;
         margin: 10px;
         outline: none;
         border: none;
         background: #F8DE7E;
     }
     &:hover{
-        filter: brightness(80%)
+        filter: brightness(80%);
     }
 `
 
@@ -143,7 +143,7 @@ class Authen extends Component {
         try{
             let payload = await axios.get(`https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/generated-key?email=${email}`)
             let { statusCode, body } = { ...payload.data } 
-            if (statusCode == 400) throw Error(body)
+            if (statusCode === 400) throw Error(body)
             alert('"please check your email!"')
         }
         catch(err){
@@ -155,7 +155,7 @@ class Authen extends Component {
         }
     }
 
-    render(){
+    render() {
         return(
             <Container>
                 <ChatBubble>
@@ -172,9 +172,9 @@ class Authen extends Component {
                         onChange={(e)=>{this.setState({email:e.target.value})}}
                     />
                     <Button onClick={this.handleAuthen.bind(this)}>
-                    <h2>Let's hatch some egg</h2></Button>
+                    <h2>{`Let's hatch some egg`}</h2></Button>
                 </ChatBubble>
-                <img className="chick" src={require('../assets/chick.svg')}/>
+                <img className="chick" alt="mascott" src={require('../assets/chick.svg')}/>
             </Container>
         )
     }
