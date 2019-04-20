@@ -4,8 +4,31 @@ import { Editor, Tags } from '../components'
 import axios from 'axios';
 import { user } from '../redux/actions';
 import connect from 'redux-connect-decorator';
+import ReactDOM from 'react-dom';
 
 // var editor = new MediumEditor('.editable')
+
+class ImageTestHelper extends Component {
+    state = {
+        isClick: false
+    }
+    onClick = () => this.setState({ isClick: true })
+    render() {
+        return (!this.state.isClick) ? (
+            <div contentEditable={false}>
+                <button onClick={this.onClick}>Click Me!</button>
+            </div>
+            // Pretend this is non-upload zone -> either file + drag n drop or url
+        ) : (<div>
+                <div style={{
+                    background: "red",
+                    height: "1rem",
+                    width: "1rem"
+                }} />
+            </div>)
+            // Pretend this is img tag
+    }
+}
 
 const Container = styled.section`
     display: flex;
@@ -18,7 +41,9 @@ const Container = styled.section`
 `
 const Title = styled.input`
     font-size: 300%;
-    width: 50vw;
+    max-width: 50vw;
+    width: 100vw;
+    min-width: 350px;
     outline: none;
     border: none;
     box-sizing: border-box;
@@ -30,7 +55,8 @@ const Line = styled.div`
     margin-bottom: 20px;
 `
 const ContentBox = styled.div`
-    width: 50vw;
+    max-width: 50vw;
+    width: 100vw;
     min-width: 350px;
     margin-top: 40px;
 `
@@ -85,7 +111,8 @@ class ContentEditor extends Component {
         tags : [],
         text : '',
         isSubmitting: false,
-        redirect: false
+        redirect: false,
+        medium: null
     }
     submitContent = async () => {
         const { email,jwt_token } = {...this.props.user}
@@ -143,8 +170,24 @@ class ContentEditor extends Component {
     )
     onUpdateText = (text, medium) => {
         this.setState({
-            text: text
+            text: text,
+            medium: (this.state.medium === null) ? medium : this.state.medium
         })
+    }
+    onAddImageStub = () => {
+        const { medium } = this.state;
+        if(medium !== null) {
+            const dom = medium.origElements;
+            const p = document.createElement("p");
+            p.innerHTML = "<br />";
+            dom.append(p);
+            const stub = document.createElement("div")
+            stub.setAttribute("contenteditable", "true");
+            dom.appendChild(stub);
+            ReactDOM.render(<ImageTestHelper />, stub);
+            dom.append(p);
+            medium.trigger('editableInput', {}, dom)
+        }
     }
     render() {
         return (
@@ -176,6 +219,12 @@ class ContentEditor extends Component {
                     {/* <Line/> */}
                     <div style={{'display':'flex',justifyContent:'flex-end'}}>
                         <Button onClick={this.submitContent}>Submit</Button>
+                    </div>
+                    <div onClick={this.onAddImageStub}>
+                        Add Image Upload Stub
+                    </div>
+                    <div>
+                        Upload File Section
                     </div>
                 </ContentBox>
             </Container>

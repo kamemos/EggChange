@@ -3,7 +3,7 @@ import React,{ Component } from 'react'
 import styled from 'styled-components'
 import 'medium-editor/dist/css/medium-editor.min.css'
 import 'medium-editor/dist/css/themes/default.css'
-import Editor from 'react-medium-editor';
+import Editor from './react-medium-editor';
 import { get } from "lodash";
 
 const BaseSize = 20;
@@ -134,7 +134,7 @@ class TextEditor extends Component{
                             buttons: [
                                 'bold', 'italic', 'underline', 'anchor',
                                 'h1', 'h2', 'h3', 'h3', 'quote',
-                                'strikethrough', 'image', 'indent', 'outdent',
+                                'strikethrough', 'indent', 'outdent',
                                 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'
                             ],
                             diffLeft: 0,
