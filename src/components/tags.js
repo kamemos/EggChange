@@ -44,6 +44,7 @@ div.top-wrapper {
         justify-content: flex-start;
         margin: 0 8px 0 8px;
         input {
+            background: none;
             width: 80px;
             height: 30px;
             border: none;

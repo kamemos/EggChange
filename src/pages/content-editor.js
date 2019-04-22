@@ -16,6 +16,7 @@ const Container = styled.section`
     min-width: 100vw;
     min-height: 100vh;
     box-sizing: border-box;
+    margin-bottom: 40px;
 
     .image-zone {
         margin-top: 10px;
@@ -33,6 +34,7 @@ const Title = styled.input`
     outline: none;
     border: none;
     box-sizing: border-box;
+    background: none;
 `
 const Line = styled.div`
     border: solid 1px grey;
@@ -148,7 +150,7 @@ class ContentEditor extends Component {
                 this.state.tags.indexOf(this.state.tag.toUpperCase()) === -1 &&
                 this.state.tag.length > 0
             ) ? [
-                ...this.state.tags, this.state.tag.toUpperCase()
+                ...this.state.tags, this.state.tag.toUpperCase().split(" ").join("-")
             ] : this.state.tags
         });
         return false;

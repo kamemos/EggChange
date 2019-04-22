@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const Container = styled.div`
     display: flex;
-    flex-direction: column
+    flex-direction: column;
     width: 40vw;
     min-width: 350px;
     margin: 5vh 0 15px 0;
@@ -15,7 +15,8 @@ const Container = styled.div`
 const TagBox = styled.div`
     display: flex;
     flex-wrap: wrap;
-    width: 100%
+    align-items: center;
+    width: 100%;
     div.tag{
         padding: 5px;
         background-color: #F8DE7E;
@@ -33,6 +34,7 @@ const InputBox = styled.div`
     justify-content: center;
     input {
         border: none;
+        border-bottom: 1px solid #000;
         outline: none;
         font-size: 3vh;
         height: 100%;
@@ -60,7 +62,7 @@ class SearchBox extends Component {
             this.props.keywordsOnchange(keywords)
             this.props.isFetchingOnchange(true)
             const blogs = (await axios.post("https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/query-keyword",{keywords:keywords})).data.body
-            console.log(blogs)
+            // console.log(blogs)
             this.props.blogsOnchange(blogs)
         }catch(err){
             alert(err)

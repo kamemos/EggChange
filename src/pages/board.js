@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components' 
-import { BoardCard,SearchBox } from '../components'
-import axios from 'axios' 
+import { BoardCard, SearchBox } from '../components'
+// import axios from 'axios';
+import { defaultTo } from "lodash";
 
 const Container = styled.section`
     display: flex;
@@ -10,15 +11,15 @@ const Container = styled.section`
     box-sizing: border-box;
     marginTop: 5vh;
 `
-const Card = styled.div`
-    width: 330px
-    height: 400px
-    border: 1px solid gray;
-    border-radius: 4px; 
-`
+// const Card = styled.div`
+//     width: 330px
+//     height: 400px
+//     border: 1px solid gray;
+//     border-radius: 4px; 
+// `
 
 const Overlay = styled.div`
-    position: absolute;
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,28 +67,20 @@ class Board extends Component {
                     blogsOnchange={(blogs)=>{this.setState({blogs:blogs})}}              
                 />
                 <CardContainer>
-    
-                    { this.state.blogs.map((blog,idx) => {
-                        const { title,tags,owner,modifiedDate } = { ...blog }
-                        return (
-                            <BoardCard
-                                key={`boardcard ${idx}`}
-                                title={ title }
-                                tags={ tags }
-                                owner={ owner }
-                                modifiedDate={ modifiedDate }
-                            />
-                        )
-                    }) }
-                    {/* <BoardCard/>
-                    <BoardCard/>
-                    <BoardCard/>
-                    <BoardCard/>
-
-                    <BoardCard/>
-                    <BoardCard/>
-                    <BoardCard/> */}
-
+                    {
+                        defaultTo(this.state.blogs, []).map((blog,idx) => {
+                            const { title,tags,owner,modifiedDate } = { ...blog }
+                            return (
+                                <BoardCard
+                                    key={`boardcard ${idx}`}
+                                    title={ title }
+                                    tags={ tags }
+                                    owner={ owner }
+                                    modifiedDate={ modifiedDate }
+                                />
+                            )
+                        })
+                    }
                 </CardContainer>    
             </Container>
         )
