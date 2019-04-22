@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from "styled-components";
 import axios from 'axios'
+import { Bounce } from 'react-reveal'
 
 // const Card = styled.div`
 //     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -23,6 +24,7 @@ const Container = styled.div`
         height: 250px;
         width: 250px;
         min-width: 220px
+        z-index: -1;
     }
     img.grass {
         z-index: -10;
@@ -113,7 +115,7 @@ const LoadingFade = styled.div`
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,.8);
-    z-index: 100;
+    z-index: 1000;
     &:after {
         content: '';
         position: absolute;
@@ -126,7 +128,7 @@ const LoadingFade = styled.div`
         border-bottom: 0;
         margin-left: -20px;
         margin-bottom: -20px;
-        z-index: 100;
+        z-index: 1000;
     }
 `
 class Authen extends Component {
@@ -158,6 +160,7 @@ class Authen extends Component {
     render() {
         return(
             <Container>
+                <Bounce bottom>
                 <ChatBubble>
                     { this.state.isloading ?
                         <LoadingFade>
@@ -175,6 +178,7 @@ class Authen extends Component {
                     <h2>{`Let's hatch some egg`}</h2></Button>
                 </ChatBubble>
                 <img className="chick" alt="mascott" src={require('../assets/chick.svg')}/>
+                </Bounce>
             </Container>
         )
     }

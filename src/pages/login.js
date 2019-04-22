@@ -3,7 +3,6 @@ import axios from 'axios'
 import connect from 'redux-connect-decorator';
 import { user } from '../redux/actions';
 import { Redirect } from 'react-router'
-// import { browserHistory } from 'react-router-dom';
 
 @connect(state => ({
     user: state.user,
@@ -19,11 +18,9 @@ class Login extends Component{
         const params = new URLSearchParams(this.props.location.search)
         var email = params.get('email')
         var key = params.get('key')
-        // console.log(email,key)
         try{
             var payload = (await axios.get(`https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/authen-via-key?email=${email}&key=${key}`)).data
             var { statusCode,body } = { ...payload }
-            // console.log(payload)
             if (statusCode === 400) throw Error()
             await this.props.setEmail( body['email'] )
             await this.props.setJWT( body['jwt_token'] )

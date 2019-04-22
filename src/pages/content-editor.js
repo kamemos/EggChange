@@ -190,6 +190,9 @@ class ContentEditor extends Component {
         }
     }
     render() {
+        if (this.state.redirect) {
+            return <Redirect to='/'/>;
+        }
         return (
             <Container>
                 {this.state.isSubmitting ? 
