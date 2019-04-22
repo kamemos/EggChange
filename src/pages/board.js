@@ -13,7 +13,7 @@ const Container = styled.section`
    
 `
 const Background = styled.div`
-    position: absolute;
+    position: fixed;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -24,8 +24,8 @@ const Background = styled.div`
     background: url(${require('../assets/eggss.png')}) bottom no-repeat;
     background-attachment: fixed;
     background-size: contain;
-    background-position:fixed; 
-    opacity: 0.5;
+    background-position: fixed; 
+    opacity: 0.6;
     filter: alpha(opacity=30);
 
     @media screen and (min-width: 1000px) {
@@ -53,12 +53,18 @@ const Loader = styled.div`
 `
 const CardContainer = styled.div`
     display: flex;
-    // justify-content: center;
+    justify-content: center;
     flex-wrap: wrap;
     width: 80vw;
     height: auto;
     min-width: 350px;
-`
+    margin-bottom: 50px;
+`;
+
+const EmptyCard = styled.div`
+width: 375px;
+margin: 0px 10px;
+`;
 
 class Board extends Component {
     state = {
@@ -88,7 +94,7 @@ class Board extends Component {
                 />
                 <CardContainer>
 
-                    { this.state.blogs.map((blog,idx) => {
+                    { defaultTo(this.state.blogs, []).map((blog,idx) => {
                         const { title,tags,owner,modifiedDate,like,dislike } = { ...blog }
                         return (
                             <BoardCard
@@ -102,14 +108,11 @@ class Board extends Component {
                             />
                         )
                     }) }
-                    {/* <BoardCard/>
-                    <BoardCard/>
-                    <BoardCard/>
-                    <BoardCard/>
-
-                    <BoardCard/>
-                    <BoardCard/>
-                    <BoardCard/> */}
+                    {
+                        Array.from(new Array(20).keys()).map((it) => (
+                            <EmptyCard key={it} />
+                        ))
+                    }
                 </CardContainer>    
             </Container>
         )

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-
+import { defaultTo } from "lodash";
 
 const Container = styled.div`
     display: flex;
@@ -34,6 +34,7 @@ const InputBox = styled.div`
     justify-content: center;
     input {
         border: none;
+        background: none;
         border-bottom: 1px solid #000;
         outline: none;
         font-size: 3vh;
@@ -56,9 +57,12 @@ class SearchBox extends Component {
             searchText: ''
         }
     }
-    async handleClick(){
+    onSearch = async (e) => {
+        e.preventDefault();
         try{
-            const keywords = this.state.searchText.split(' ')
+            const originalKeywords = defaultTo(this.state.searchText, '').trim().split(' ').filter((it) => it.length > 0);
+            const uniqueKeywords = new Set(originalKeywords);
+            const keywords = Array.from(uniqueKeywords).sort((a, b) => originalKeywords.indexOf(a) - originalKeywords.indexOf(b));
             this.props.keywordsOnchange(keywords)
             this.props.isFetchingOnchange(true)
             const blogs = (await axios.post("https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/query-keyword",{keywords:keywords})).data.body
@@ -68,29 +72,30 @@ class SearchBox extends Component {
             alert(err)
         }finally{
             this.props.isFetchingOnchange(false)
-            this.setState({searchText: ''})
+            // this.setState({searchText: ''})
         }
     }
     render(){
         return (
             <Container>
                 <InputBox>
-                    <form onSubmit={e=>{this.handleClick();e.preventDefault()}}>
+                    <form onSubmit={this.onSearch}>
                         <input 
                             onChange={(e)=>{this.setState({searchText:e.target.value})}} 
                             placeholder="Search by keyword"
+                            value={this.state.searchText}
                         />
                         <FontAwesomeIcon 
                             className='search-icon' 
                             icon={faSearch} 
-                            onClick={this.handleClick.bind(this)}
+                            onClick={this.onSearch}
                         />
                     </form>
                 </InputBox>
                 <PseudoDiv/>
                 <TagBox>
                     <p style={{margin:'5px 5px 5px 0',color:'gray'}}><b>Keyword : </b></p>
-                    { this.props.keywords.map((keyword,idx)=>{
+                    { defaultTo(this.props.keywords, []).map((keyword,idx)=>{
                         return (
                             <div className="tag" key={`tag ${idx}`}><b>{keyword}</b></div>
                         )

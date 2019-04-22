@@ -6,7 +6,7 @@ import connect from 'redux-connect-decorator';
 // Images
 import yolk from "../assets/Yolk.svg";
 import egg from "../assets/Egg-Gradient.svg";
-
+import { LastestPost } from '../components'
 
 const Container = styled.section`
 display: flex;
@@ -101,10 +101,11 @@ section {
 }), {})
 class Home extends Component {
     render() {
-        console.log(this.props)
         return (
             <Container>
+                
                 <img className="yolk" src={yolk} alt="yolk" />
+                <LastestPost/>
                 <section className="welcome">
                     <div style={{
                         width: "250px",

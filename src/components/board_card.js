@@ -13,7 +13,11 @@ const Card = styled.div`
     // border-radius: 12px;
     overflow: hidden;
     margin: 10px;
+    background: #FFFB;
+    box-sizing: border-box;
     // box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 5px;
+    box-shadow: 0px 3px 5px #0003;
     img.chick_bg {
         width: 100%;
         height: 250px;
@@ -23,6 +27,10 @@ const Card = styled.div`
         height: 20px;
         margin-right: 15px;
         color: gray;
+    }
+
+    .content {
+        padding: 15px 25px 25px 25px;
     }
 `
 const TagBox = styled.div`
@@ -49,32 +57,34 @@ const BoardCard = ({title,tags,owner,modifiedDate,like,dislike}) => {
     return (
         <Card>
             <img alt="chick_bg" className='chick_bg' src={require('../assets/chick_bg.jpg')}/>
-            <Link style={{textDecoration:'none'}} to={`/blog/${title}`}><h2><b>{title}</b></h2></Link>
+            <div className="content">
+                <Link style={{textDecoration:'none'}} to={`/blog/${title}`}><h2><b>{title}</b></h2></Link>
 
-            <Row>
-                <FontAwesomeIcon className='tag_icon' icon={faUserCircle}/>
-                <p>{owner}</p>
-            </Row>  
-            <Row>
-                <FontAwesomeIcon className='tag_icon' icon={faClock}/>
-                <p>{moment(modifiedDate).startOf('day').fromNow()}</p>
-            </Row>
-            <TagBox>
-                <FontAwesomeIcon
-                    className='tag_icon' 
-                    icon={faTag} 
-                />
-                {tags.map((tag,idx) => {
-                    return (
-                        <div key={`tag ${idx}`} className='tag'><b>{tag}</b></div>
-                    )
-                })}
-            </TagBox>
-            <div style={{display:'flex',justifyContent:'flex-end'}}>
-                <Score
-                    like={like}
-                    dislike={dislike}
-                />
+                <Row>
+                    <FontAwesomeIcon className='tag_icon' icon={faUserCircle}/>
+                    <p>{owner}</p>
+                </Row>  
+                <Row>
+                    <FontAwesomeIcon className='tag_icon' icon={faClock}/>
+                    <p>{moment(modifiedDate).startOf('day').fromNow()}</p>
+                </Row>
+                <TagBox>
+                    <FontAwesomeIcon
+                        className='tag_icon' 
+                        icon={faTag} 
+                    />
+                    {tags.map((tag,idx) => {
+                        return (
+                            <div key={`tag ${idx}`} className='tag'><b>{tag}</b></div>
+                        )
+                    })}
+                </TagBox>
+                <div style={{display:'flex',justifyContent:'flex-end'}}>
+                    <Score
+                        like={like}
+                        dislike={dislike}
+                    />
+                </div>
             </div>
         </Card>
     )
