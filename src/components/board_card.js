@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { faTag,faUserCircle,faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Score }  from '.'
+import { Link } from 'react-router-dom'
 
 const Card = styled.div`
     display: flex;
@@ -43,11 +45,11 @@ const Row = styled.div`
     display: flex;
     align-items: center;
 `
-const BoardCard = ({title,tags,owner,modifiedDate}) => {
+const BoardCard = ({title,tags,owner,modifiedDate,like,dislike}) => {
     return (
         <Card>
             <img alt="chick_bg" className='chick_bg' src={require('../assets/chick_bg.jpg')}/>
-            <h2><b>{title}</b></h2>
+            <Link style={{textDecoration:'none'}} to={`/blog/${title}`}><h2><b>{title}</b></h2></Link>
 
             <Row>
                 <FontAwesomeIcon className='tag_icon' icon={faUserCircle}/>
@@ -68,6 +70,12 @@ const BoardCard = ({title,tags,owner,modifiedDate}) => {
                     )
                 })}
             </TagBox>
+            <div style={{display:'flex',justifyContent:'flex-end'}}>
+                <Score
+                    like={like}
+                    dislike={dislike}
+                />
+            </div>
         </Card>
     )
 }

@@ -33,16 +33,17 @@ user-select: none;
 }
 `;
 
-export default (props) => (
+export default ({like,dislike}) => (
     <Container>
         <FontAwesomeIcon
             className="up"
             icon={faThumbsUp}
         />
-        <div>999</div>
+        <div>{like}</div>
         <FontAwesomeIcon
             className="down"
             icon={faThumbsDown}
         />
+        <div>{dislike}</div>
     </Container>
 )
