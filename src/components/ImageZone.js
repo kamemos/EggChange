@@ -211,7 +211,11 @@ class ImageZone extends Component {
     }
     componentWillUnmount() {
         // Make sure to revoke the data uris to avoid memory leaks
-        URL.revokeObjectURL(this.state.image.preview)
+        try {
+            URL.revokeObjectURL(this.state.image.preview)
+        } catch(e) {
+            // Failed silently
+        }
     }
     onChangeActiveTab = (tab) => () => {
         this.setState({

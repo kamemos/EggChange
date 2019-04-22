@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
-import { Editor, Tags, ImageZone, FilesUploader, HideShow } from '../components'
+import { Editor, Tags, ImageZone, HideShow } from '../components'
 import axios from 'axios';
 import { user } from '../redux/actions';
 import connect from 'redux-connect-decorator';
@@ -53,26 +53,34 @@ const ContentBox = styled.div`
 // `
 const Button = styled.button`
     & {
-        font-size: 3vh;
+        font-size: 1rem;
         box-sizing: border-box;
-        margin-top: 40px;
         outline: none;
         border: none;
         background: #F8DE7E;
         border-radius: 5px;
+        padding: 7px 10px;
     }
     &:hover{
         filter: brightness(80%);
     }
+    &.cancel {
+        margin-right: 3px;
+        background: #ED3F39;
+        color: #FFF;
+    }
+    &.submit {
+        background: #C1ED38;
+    }
 `
 const Overlay = styled.div`
-    position: absolute;
+    position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(0,0,0,0.8);
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     z-index: 1000;
 `
 const Loader = styled.div`
@@ -83,7 +91,21 @@ const Loader = styled.div`
     height: 60px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 1s linear infinite;
-`
+`;
+
+const CancelDialogue = styled.div`
+display: flex;
+background: white;
+flex-direction: column;
+box-sizing: border-box;
+padding: 20px;
+border-radius: 5px;
+& > div {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+`;
 
 @connect(state => ({
     user: state.user,
@@ -98,7 +120,8 @@ class ContentEditor extends Component {
         text : '',
         isSubmitting: false,
         redirect: false,
-        medium: null
+        medium: null,
+        isCancelling: false
     }
     submitContent = async () => {
         const { email,jwt_token } = {...this.props.user}
@@ -160,25 +183,10 @@ class ContentEditor extends Component {
             medium: (this.state.medium === null) ? medium : this.state.medium
         })
     }
-    // onAddImageStub = () => {
-    //     const { medium } = this.state;
-    //     if(medium !== null) {
-    //         const dom = medium.origElements;
-    //         const p = document.createElement("p");
-    //         p.innerHTML = "<br />";
-    //         dom.append(p);
-    //         const stub = document.createElement("div")
-    //         stub.setAttribute("contenteditable", "true");
-    //         dom.appendChild(stub);
-    //         ReactDOM.render(<ImageTestHelper />, stub);
-    //         dom.append(p);
-    //         medium.trigger('editableInput', {}, dom)
-    //     }
-    // }
     onAddImage = (src) => {
         const { medium } = this.state;
         if (medium !== null) {
-            console.log(src)
+            // console.log(src)
             const dom = medium.origElements;
             const img = document.createElement("img");
             img.setAttribute("src", src);
@@ -200,6 +208,16 @@ class ContentEditor extends Component {
             medium.trigger('editableInput', {}, dom)
         }
     }
+    onToggleCancel = () => {
+        this.setState({
+            isCancelling: !this.state.isCancelling
+        })
+    }
+    onRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    }
     render() {
         if (this.state.redirect) {
             return <Redirect to='/'/>;
@@ -211,6 +229,19 @@ class ContentEditor extends Component {
                         <Loader/>
                     </Overlay>
                     :null}
+                {
+                    this.state.isCancelling && (
+                        <Overlay>
+                            <CancelDialogue>
+                                Are you sure you want to cancel?
+                                <div>
+                                    <Button onClick={this.onToggleCancel} className="cancel">No</Button>
+                                    <Button onClick={this.onRedirect} className="submit">Yes</Button>
+                                </div>
+                            </CancelDialogue>
+                        </Overlay>
+                    )
+                }
                 <ContentBox>
                     <Title 
                         value={this.state.title}
@@ -245,15 +276,13 @@ class ContentEditor extends Component {
                             onAdd={this.onAddImage}
                         />
                     </HideShow>
-                    <HideShow
-                        className="file-zone"
-                        initial={false}
-                        topic="Add Files"
-                    >
-                        <FilesUploader />
-                    </HideShow>
-                    <div style={{ 'display': 'flex', justifyContent: 'flex-end' }}>
-                        <Button onClick={this.submitContent}>Submit</Button>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: '15px'
+                    }}>
+                        <Button className="cancel" onClick={this.onToggleCancel}>Cancel</Button>
+                        <Button className="submit" onClick={this.submitContent}>Submit</Button>
                     </div>
                 </ContentBox>
             </Container>
