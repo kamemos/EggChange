@@ -1,34 +1,11 @@
 import React, { Component } from 'react';
 import styled from "styled-components";
-import { Editor, Tags } from '../components'
+import { Editor, Tags, ImageZone, FilesUploader, HideShow } from '../components'
 import axios from 'axios';
 import { user } from '../redux/actions';
 import connect from 'redux-connect-decorator';
-import ReactDOM from 'react-dom';
 
 // var editor = new MediumEditor('.editable')
-
-class ImageTestHelper extends Component {
-    state = {
-        isClick: false
-    }
-    onClick = () => this.setState({ isClick: true })
-    render() {
-        return (!this.state.isClick) ? (
-            <div contentEditable={false}>
-                <button onClick={this.onClick}>Click Me!</button>
-            </div>
-            // Pretend this is non-upload zone -> either file + drag n drop or url
-        ) : (<div>
-                <div style={{
-                    background: "red",
-                    height: "1rem",
-                    width: "1rem"
-                }} />
-            </div>)
-            // Pretend this is img tag
-    }
-}
 
 const Container = styled.section`
     display: flex;
@@ -38,6 +15,14 @@ const Container = styled.section`
     min-width: 100vw;
     min-height: 100vh;
     box-sizing: border-box;
+
+    .image-zone {
+        margin-top: 10px;
+    }
+    .image-zone, .file-zone {
+        box-shadow: 0px 1px 3px #0003;
+        margin-bottom: 0px;
+    }
 `
 const Title = styled.input`
     font-size: 300%;
@@ -174,18 +159,43 @@ class ContentEditor extends Component {
             medium: (this.state.medium === null) ? medium : this.state.medium
         })
     }
-    onAddImageStub = () => {
+    // onAddImageStub = () => {
+    //     const { medium } = this.state;
+    //     if(medium !== null) {
+    //         const dom = medium.origElements;
+    //         const p = document.createElement("p");
+    //         p.innerHTML = "<br />";
+    //         dom.append(p);
+    //         const stub = document.createElement("div")
+    //         stub.setAttribute("contenteditable", "true");
+    //         dom.appendChild(stub);
+    //         ReactDOM.render(<ImageTestHelper />, stub);
+    //         dom.append(p);
+    //         medium.trigger('editableInput', {}, dom)
+    //     }
+    // }
+    onAddImage = (src) => {
         const { medium } = this.state;
-        if(medium !== null) {
+        if (medium !== null) {
+            console.log(src)
             const dom = medium.origElements;
+            const img = document.createElement("img");
+            img.setAttribute("src", src);
             const p = document.createElement("p");
-            p.innerHTML = "<br />";
+            p.setAttribute("class", "");
+            p.append(img)
+            p.append(document.createElement("br"));
+
+            // const emptyP = document.createElement("p");
+            // emptyP.innerHTML = "<br />";
+
+            const emptyDiv = document.createElement("div");
+            emptyDiv.setAttribute("class", "");
+            emptyDiv.innerHTML = "<br />";
+
+            // dom.append(emptyP);
             dom.append(p);
-            const stub = document.createElement("div")
-            stub.setAttribute("contenteditable", "true");
-            dom.appendChild(stub);
-            ReactDOM.render(<ImageTestHelper />, stub);
-            dom.append(p);
+            dom.append(emptyDiv);
             medium.trigger('editableInput', {}, dom)
         }
     }
@@ -217,14 +227,29 @@ class ContentEditor extends Component {
                     />
 
                     {/* <Line/> */}
-                    <div style={{'display':'flex',justifyContent:'flex-end'}}>
+                    {
+                        // <div onClick={this.onAddImageStub}>
+                        //     Add Image Upload Stub
+                        // </div>
+                    }
+                    <HideShow
+                        className="image-zone"
+                        initial={false}
+                        topic="Add Image"
+                    >
+                        <ImageZone
+                            onAdd={this.onAddImage}
+                        />
+                    </HideShow>
+                    <HideShow
+                        className="file-zone"
+                        initial={false}
+                        topic="Add Files"
+                    >
+                        <FilesUploader />
+                    </HideShow>
+                    <div style={{ 'display': 'flex', justifyContent: 'flex-end' }}>
                         <Button onClick={this.submitContent}>Submit</Button>
-                    </div>
-                    <div onClick={this.onAddImageStub}>
-                        Add Image Upload Stub
-                    </div>
-                    <div>
-                        Upload File Section
                     </div>
                 </ContentBox>
             </Container>

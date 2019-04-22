@@ -1,0 +1,12 @@
+export { default as Loader1 } from './loader1';
+export { default as Loader2 } from './loader2';
+export { default as Loader3 } from './loader3';
+export { default as Loader4 } from './loader4';
+export { default as Loader5 } from './loader5';
+export { default as Loader6 } from './loader6';
+export { default as Loader7 } from './loader7';
+export { default as Loader8 } from './loader8';
+export { default as Loader9 } from './loader9';
+export { default as Loader10 } from './loader10';
+export { default as Loader11 } from './loader11';
+export { default as Loader12 } from './loader12';
