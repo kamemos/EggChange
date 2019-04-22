@@ -4,6 +4,7 @@ import { Editor, Tags, ImageZone, FilesUploader, HideShow } from '../components'
 import axios from 'axios';
 import { user } from '../redux/actions';
 import connect from 'redux-connect-decorator';
+import { Redirect } from 'react-router';
 
 // var editor = new MediumEditor('.editable')
 
@@ -200,6 +201,9 @@ class ContentEditor extends Component {
         }
     }
     render() {
+        if (this.state.redirect) {
+            return <Redirect to='/'/>;
+        }
         return (
             <Container>
                 {this.state.isSubmitting ? 

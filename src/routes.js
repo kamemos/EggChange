@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from 'react-router-dom';
-import { ContentEditor, Home, Post, Authen, Login } from "./pages";
+import { ContentEditor, Home, Post, Authen, Login, Board } from "./pages";
 
 export default () => (
     <Switch>
@@ -9,5 +9,6 @@ export default () => (
         <Route exact path="/editor" component={ContentEditor} />
         <Route exact path="/post" component={Post} />
         <Route exact path="/api/login" render={(props) => <Login {...props} />}/>
+        <Route exact path="/board" component={Board}/>
     </Switch>
 )
