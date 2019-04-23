@@ -17,3 +17,11 @@ export function setJWT(token){
         })
     }
 }
+
+export function logout() {
+    return (dispatch) => {
+        return dispatch({
+            type: types.LOGOUT
+        })
+    }
+}

@@ -34,13 +34,25 @@ const Card = styled.div`
     }
     &:hover {
         box-shadow: 0 0px 8px 0 #5BB8FF77;
-        &:after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            background: linear-gradient(#FFF, transparent);
+        div.img-container {
+            &:after {
+                content: "";
+                display: block;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                background: linear-gradient(#FFF, transparent);
+                top: 0;
+                left: 0;
+            }
+        }
+    }
+
+    div.img-container {
+        position: relative;
+        img.chick{
+            width: 250px;
+            /* height: 200px; */
         }
     }
 `
@@ -64,40 +76,49 @@ const Row = styled.div`
     display: flex;
     align-items: center;
 `
-const BoardCard = ({title,tags,owner,modifiedDate,like,dislike}) => {
+const BoardCard = ({ title, tags, owner, modifiedDate, like, dislike }) => {
     return (
-        <Card>
-            <img alt="chick_bg" className='chick_bg' src={require('../assets/chick_bg.jpg')}/>
-            <div className="content">
-                <Link style={{textDecoration:'none'}} to={`/blog/${title}`}><h2><b>{title}</b></h2></Link>
-
-                <Row>
-                    <FontAwesomeIcon className='tag_icon' icon={faUserCircle}/>
-                    <p>{owner}</p>
-                </Row>  
-                <Row>
-                    <FontAwesomeIcon className='tag_icon' icon={faClock}/>
-                    <p>{moment(modifiedDate).startOf('day').fromNow()}</p>
-                </Row>
-                <TagBox>
-                    <FontAwesomeIcon
-                        className='tag_icon' 
-                        icon={faTag} 
-                    />
-                    {tags.map((tag,idx) => {
-                        return (
-                            <div key={`tag ${idx}`} className='tag'><b>{tag}</b></div>
-                        )
-                    })}
-                </TagBox>
-                <div style={{display:'flex',justifyContent:'flex-end'}}>
-                    <Score
-                        like={like}
-                        dislike={dislike}
-                    />
+        <Link
+            style={{
+                textDecoration: 'none',
+                color: 'black'
+            }}
+            to={`/post/${title}`}
+        >
+            <Card>
+                <div className='img-container'>
+                    <img alt="chick_bg" className='chick_bg' src={require('../assets/chick_bg.jpg')}/>
                 </div>
-            </div>
-        </Card>
+                <div className="content">
+                    <h2><b>{title}</b></h2>
+                    <Row>
+                        <FontAwesomeIcon className='tag_icon' icon={faUserCircle}/>
+                        <p>{owner}</p>
+                    </Row>  
+                    <Row>
+                        <FontAwesomeIcon className='tag_icon' icon={faClock}/>
+                        <p>{moment(modifiedDate).startOf('day').fromNow()}</p>
+                    </Row>
+                    <TagBox>
+                        <FontAwesomeIcon
+                            className='tag_icon' 
+                            icon={faTag} 
+                        />
+                        {tags.map((tag,idx) => {
+                            return (
+                                <div key={`tag ${idx}`} className='tag'><b>{tag}</b></div>
+                            )
+                        })}
+                    </TagBox>
+                    <div style={{display:'flex',justifyContent:'flex-end'}}>
+                        <Score
+                            like={like}
+                            dislike={dislike}
+                        />
+                    </div>
+                </div>
+            </Card>
+        </Link>
     )
 }
 

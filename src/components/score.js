@@ -33,16 +33,31 @@ user-select: none;
 }
 `;
 
-export default ({like,dislike}) => (
-    <Container>
+function onHandleClick(func) {
+    return (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if(typeof(func) === "function") {
+            return func(e);
+        }
+        return false;
+    }
+}
+
+export default ({like, dislike, onLike, onDislike, ...props }) => (
+    <Container
+        {...props}
+    >
         <FontAwesomeIcon
             className="up"
             icon={faThumbsUp}
+            onClick={onHandleClick(onLike)}
         />
         <div>{like}</div>
         <FontAwesomeIcon
             className="down"
             icon={faThumbsDown}
+            onClick={onHandleClick(onDislike)}
         />
         <div>{dislike}</div>
     </Container>

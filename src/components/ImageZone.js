@@ -128,7 +128,7 @@ align-items: center;
 justify-content: center;
 position: relative;
 
-.content {
+.content-image {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,7 +295,7 @@ class ImageZone extends Component {
                                     {...getRootProps()}
                                 >
                                     <input {...getInputProps()} />
-                                    <div className="content">
+                                    <div className="content-image">
                                         {
                                             (image === null) ? [
                                                 <FontAwesomeIcon

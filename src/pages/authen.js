@@ -33,7 +33,7 @@ const Container = styled.div`
     }
 
 `
-const ChatBubble = styled.div`
+const ChatBubble = styled.form`
     &{
         position: relative;
         display: flex;
@@ -138,9 +138,9 @@ class Authen extends Component {
         error : false,
     }
 
-    async handleAuthen(){
+    handleAuthen = async (e) => {
+        e.preventDefault();
         const email = this.state.email
-        console.log(this.state)
         await this.setState({isloading : true})
         try{
             let payload = await axios.get(`https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/generated-key?email=${email}`)
@@ -152,32 +152,35 @@ class Authen extends Component {
             alert(err)
             await this.setState({error : true})
         }
-        finally{
+        finally {
             await this.setState({isloading : false, email: ''})
         }
+        return false;
     }
 
     render() {
         return(
             <Container>
                 <Bounce bottom>
-                <ChatBubble>
-                    { this.state.isloading ?
-                        <LoadingFade>
-                            <Loader/>
-                        </LoadingFade>:
-                        null
-                    }
-                    <p><b>Please put your email here</b></p>
-                    <InputBox
-                        type="email"
-                        value={this.state.email} 
-                        onChange={(e)=>{this.setState({email:e.target.value})}}
-                    />
-                    <Button onClick={this.handleAuthen.bind(this)}>
-                    <h2>{`Let's hatch some egg`}</h2></Button>
-                </ChatBubble>
-                <img className="chick" alt="mascott" src={require('../assets/chick.svg')}/>
+                    <ChatBubble
+                        onSubmit={this.handleAuthen}
+                    >
+                        { this.state.isloading ?
+                            <LoadingFade>
+                                <Loader/>
+                            </LoadingFade>:
+                            null
+                        }
+                        <p><b>Please put your email here</b></p>
+                        <InputBox
+                            type="email"
+                            value={this.state.email} 
+                            onChange={(e)=>{this.setState({email:e.target.value})}}
+                        />
+                        <Button onClick={this.handleAuthen}>
+                        <h2>{`Let's hatch some egg`}</h2></Button>
+                    </ChatBubble>
+                    <img className="chick" alt="mascott" src={require('../assets/chick.svg')}/>
                 </Bounce>
             </Container>
         )

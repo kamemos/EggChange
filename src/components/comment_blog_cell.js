@@ -68,12 +68,6 @@ background-image: linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4
 }
 `;
 
-const TestContent = `
-<p class="">
-    This is wonderful!<br />
-</p>
- `;
-
 const ZigZagBottom = styled.div`
 &::after {
     filter: drop-shadow(#0003 0px 2px 2px);
@@ -118,6 +112,12 @@ const ZigZagTop = styled.div`
 `;
 
 class CommentBlogCell extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            text : ''
+        }
+    }
     render() {
         return (
             <section
@@ -133,12 +133,12 @@ class CommentBlogCell extends Component {
                         <div className="score">
                             <Score />
                         </div>
-                        <div className="title">[Title] Re</div>
+                        <div className="title"><b>From :</b> {this.props.from}</div>
                     </section>
                     <section className="content">
                         <StyleContainer dangerouslySetInnerHTML={{
                             __html:
-                                TestContent
+                                this.props.text
                         }} />
                     </section>
                 </Container>

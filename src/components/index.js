@@ -19,4 +19,6 @@ export { default as HideShow } from "./HideShow";
 export { default as BoardCard } from "./board_card";
 export { default as SearchBox } from "./search_box";
 export { default as LastestPost } from "./lastest_post";
+export { default as InputBlogCell } from "./input_blog_cell";
+
 

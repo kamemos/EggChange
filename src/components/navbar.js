@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faSearch, faSignInAlt, faSignOutAlt, faHome, faPlusCircle, faBomb, faComment } from '@fortawesome/free-solid-svg-icons';
 import Fade from 'react-reveal/Fade';
 import { user } from '../redux/actions';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
 import { Logo } from "../components";
+import { get } from "lodash";
 
 /*
 Color palette
@@ -36,20 +37,36 @@ width: 100vw;
 
     article {
         flex: 1;
-        &.logo, &.menu-btn {
-            max-width: 200px;
-            min-width: 200px;
+        &.logo {
+            justify-self: flex-start;
         }
         &.menu-btn {
             text-align: right;
             font-size: 1.25rem;
+            justify-self: flex-end;
         }
         &.title {
-            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
     }
 }
-article.menu {
+article.menu-large {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        li {
+            /* margin: 2px; */
+        }
+    }
+}
+article.menu-small {
     display: flex;
     justify-content: center;
     ul {
@@ -57,24 +74,23 @@ article.menu {
         margin: 0;
         padding: 0;
         padding-bottom: 15px;
+
+        li:last-child {
+            margin-top: 10px;
+        }
+        li {
+            white-space: nowrap;
+        }
     }
 }
 @media screen and (max-width: 1024px) {
     .small-no-show {
-        display: none;
-    }
-    .top {
-        article {
-            &.logo, &.menu-btn {
-                max-width: 100px;
-                min-width: 100px;
-            }
-        }
+        display: none !important;
     }
 }
 @media screen and (min-width: 1025px){
     .large-no-show {
-        display: none;
+        display: none !important;
     }
 }
 z-index: 52;
@@ -87,32 +103,137 @@ const ChickButton = styled.div`
         height: 30px;
         width: 30px;
     }
-    button {
-        font-size: 2vh;
-        padding: 5px;
-        box-sizing: border-box;
-        margin-bottom: auto;
-        margin: 10px;
-        outline: none;
-        border: none;
-        background: #FCF4A3;
-    }
-`
+`;
+
+const Button = styled.button`
+font-size: 0.9rem;
+padding: 7px 10px;
+border-radius: calc(0.9rem + 7px);
+box-sizing: border-box;
+margin-bottom: auto;
+outline: none;
+border: none;
+background: none;
+user-select: none;
+line-height: 0.9rem;
+color: #000;
+svg {
+    margin-right: 3px;
+}
+
+&:hover {
+    color: #555;
+    text-decoration: underline;
+    text-underline-position: under;
+}
+&:active {
+    color: #111;
+    text-decoration: underline;
+    text-underline-position: under;
+}
+`;
+
 const LoginButton = ( user ) => {
-    let email = user.user.email
+    const email = get(user, 'user.email', '')
     return (email === '') ? 
         <ChickButton>
             <Link to='/authen'>
-                <button className='button'>
+                <Button>
+                    <FontAwesomeIcon
+                        icon={faSignInAlt}
+                    />
                     Login
-                </button>
+                </Button>
             </Link>
         </ChickButton>:
         <ChickButton>
             <img className='chick' alt="mascott" src={require('../assets/chick_icon.svg')}/>
-            {email}
+            <span className="large-no-show">{email}</span>
         </ChickButton>
 }
+
+const List = ({ user, onLogout }) => {
+    return (
+        <ul>
+            <li>
+                <Link to="/">
+                    <Button>
+                        <FontAwesomeIcon
+                            icon={faHome}
+                        />
+                        Home
+                    </Button>
+                </Link>
+            </li>
+            <li>
+                <Link to="/board">
+                    <Button>
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                        />
+                        Search
+                    </Button>
+                </Link>
+            </li>
+            {
+                (get(user, 'email', '').length !== 0) && (
+                    <li>
+                        <Link to="/editor">
+                            <Button>
+                                <FontAwesomeIcon
+                                    icon={faPlusCircle}
+                                />
+                                New&nbsp;Post
+                            </Button>
+                        </Link>
+                    </li>
+                )
+            }
+            {
+                (get(user, 'email', '').length !== 0) && (
+                    <li>
+                        <Button
+                            onClick={onLogout}
+                        >
+                            <FontAwesomeIcon
+                                icon={faSignOutAlt}
+                            />
+                            Log&nbsp;Out
+                        </Button>
+                    </li>
+                )
+            }
+            <li>
+                <LoginButton user={user} />
+            </li>
+        </ul>
+    );
+}
+
+const MapTitleComponent = (icon, text) => (
+    () => (
+        <div style={{
+            userSelect: 'none'
+        }}>
+            <FontAwesomeIcon
+                icon={icon}
+                style={{
+                    marginRight: '5px'
+                }}
+            />
+            {text}
+        </div>
+    )
+)
+const NameMap = {
+    "": MapTitleComponent(faHome, "Home"),
+    "board": MapTitleComponent(faSearch, "Search"),
+    "editor": MapTitleComponent(faPlusCircle, "New Post"),
+    "post": MapTitleComponent(faComment, "Post"),
+    "authen": MapTitleComponent(faSignInAlt, "Log In")
+};
+
+const ErrorComp = MapTitleComponent(faBomb, "Error")
 
 @connect(state => ({
     user: { ...state.user },
@@ -131,7 +252,13 @@ class Navbar extends Component {
             this.setState({ isOpen: false });
         }
     }
+    onLogout = () => {
+        this.props.logout();
+        window.location.reload(); 
+    }
     render() {
+        const pathname = get(this.props, 'location.pathname', '/bomb').split("/")[1];
+        const TitleComponent = (Object.keys(NameMap).indexOf(pathname) !== -1) ? (NameMap[pathname]) : (ErrorComp);
         return (
             <>
                 <Container>
@@ -146,7 +273,9 @@ class Navbar extends Component {
                                 <Logo.Logo size={35} />
                             </Link>
                         </article>
-                        <article className="title">Title</article>
+                        <article className="title">
+                            <TitleComponent />
+                        </article>
                         <article className="menu-btn">
                             <FontAwesomeIcon
                                 className="large-no-show"
@@ -154,15 +283,19 @@ class Navbar extends Component {
                                 onClick={this.onToggleHamburger}
                             />
                         </article>
+                        <article className="menu-large small-no-show">
+                            <List
+                                user={this.props.user}
+                                onLogout={this.onLogout}
+                            />
+                        </article>
                     </section>
-
-                    <article className="menu">
+                    <article className="menu-small large-no-show">
                         <Fade collapse when={this.state.isOpen}>
-                            <ul>
-                                <li><LoginButton user={this.props.user}/></li>
-                                <li>Option 2</li>
-                                <li>Option 3</li>
-                            </ul>
+                            <List
+                                user={this.props.user}
+                                onLogout={this.props.logout}
+                            />
                         </Fade>
                     </article>
                 </Container>
@@ -180,4 +313,4 @@ class Navbar extends Component {
     }
 }
 
-export default Navbar;
+export default withRouter(Navbar);

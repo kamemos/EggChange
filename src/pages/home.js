@@ -181,14 +181,7 @@ class Home extends Component {
                 <LastestPost/>
                 <img className="egg" src={egg} alt="egg" />
                 <section className="content">
-                    Home
-                    {
-                        Array.from(new Array(20).keys()).map((it) => (
-                            <p key={it}>
-                                Lorem ipsum
-                            </p>
-                        ))
-                    }
+                    <h2>About Us</h2>
                 </section>
             </Container>
         )

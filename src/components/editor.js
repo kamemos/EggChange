@@ -101,6 +101,10 @@ export const StyleContainer = styled.div`
     *:focus {
         outline: none;
     }
+
+    img {
+       max-width: 100%;
+    }
 `;
 
 class TextEditor extends Component{
@@ -112,7 +116,7 @@ class TextEditor extends Component{
     }
 
     handleChange = (text, medium) => {
-        this.setState({ text: text });
+        // this.setState({ text: text });
         if(this.props.onChange) {
             this.props.onChange(text, medium);
         }
@@ -126,7 +130,7 @@ class TextEditor extends Component{
                 }
                 <Editor
                     tag="div"
-                    text={this.state.text}
+                    text={ this.state.text }
                     onChange={this.handleChange}
                     options={{
                         toolbar: {
