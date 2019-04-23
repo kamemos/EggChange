@@ -118,6 +118,12 @@ const ZigZagTop = styled.div`
 `;
 
 class CommentBlogCell extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            text : ''
+        }
+    }
     render() {
         return (
             <section
@@ -133,12 +139,12 @@ class CommentBlogCell extends Component {
                         <div className="score">
                             <Score />
                         </div>
-                        <div className="title">[Title] Re</div>
+                        <div className="title"><b>From :</b> {this.props.from}</div>
                     </section>
                     <section className="content">
                         <StyleContainer dangerouslySetInnerHTML={{
                             __html:
-                                TestContent
+                                this.props.text
                         }} />
                     </section>
                 </Container>

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { StyleContainer, Score } from "../components";
+import moment from 'moment'
 
 const Container = styled.article`
 max-width: calc(50vw + 100px);
@@ -122,12 +123,16 @@ const OPBlocgCell = (props) => (
                 <div className="score">
                     <Score />
                 </div>
-                <div className="title">[Title]</div>
+                <div className="title">{props.title}</div>
+                <div>
+                    {console.log('test',props.modifiedTime)}
+                    <b>Created :</b> {moment(props.modifiedTime).startOf('day').fromNow()}
+                </div>
             </section>
             <section className="content">
                 <StyleContainer dangerouslySetInnerHTML={{
                     __html:
-                        TestContent
+                        props.text
                 }} />
             </section>
         </Container>
