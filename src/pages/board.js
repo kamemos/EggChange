@@ -62,7 +62,7 @@ const CardContainer = styled.div`
 `;
 
 const EmptyCard = styled.div`
-width: 375px;
+width: 250px;
 margin: 0px 10px;
 `;
 
@@ -93,7 +93,6 @@ class Board extends Component {
                     blogsOnchange={(blogs)=>{this.setState({blogs:blogs})}}              
                 />
                 <CardContainer>
-
                     { defaultTo(this.state.blogs, []).map((blog,idx) => {
                         const { title,tags,owner,modifiedDate,like,dislike } = { ...blog }
                         return (

@@ -6,6 +6,7 @@ import Fade from 'react-reveal/Fade';
 import { user } from '../redux/actions';
 import { Link } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
+import { Logo } from "../components";
 
 /*
 Color palette
@@ -127,7 +128,9 @@ class Navbar extends Component {
             <>
                 <Container>
                     <section className="top">
-                        <article className="logo">Logo</article>
+                        <article className="logo">
+                            <Logo.LogoWithName size={35} />
+                        </article>
                         <article className="title">Title</article>
                         <article className="menu-btn">
                             <FontAwesomeIcon

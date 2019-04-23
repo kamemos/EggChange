@@ -1,6 +1,7 @@
 import * as Form from './form';
 import * as Loaders from './loaders';
-export { Form, Loaders };
+import * as Logo from "./logo";
+export { Form, Loaders, Logo };
 
 export { default as Editor } from './editor';
 export { StyleContainer } from './editor';

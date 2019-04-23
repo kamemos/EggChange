@@ -9,18 +9,18 @@ import { Link } from 'react-router-dom'
 const Card = styled.div`
     display: flex;
     flex-direction: column;
-    width: 375px;
+    width: 250px;
     // border-radius: 12px;
     overflow: hidden;
     margin: 10px;
     background: #FFFB;
     box-sizing: border-box;
-    // box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
     box-shadow: 0px 3px 5px #0003;
+    position: relative;
     img.chick_bg {
         width: 100%;
-        height: 250px;
+        /* height: 250px; */
     }
     .tag_icon {
         width: 20px;
@@ -32,13 +32,24 @@ const Card = styled.div`
     .content {
         padding: 15px 25px 25px 25px;
     }
+    &:hover {
+        box-shadow: 0 0px 8px 0 #5BB8FF77;
+        &:after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: linear-gradient(#FFF, transparent);
+        }
+    }
 `
 const TagBox = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    width: 100%
-    div.tag{
+    width: 100%;
+    div.tag {
         padding: 5px;
         background-color: #F8DE7E;
         border-radius: 4px;
@@ -46,7 +57,7 @@ const TagBox = styled.div`
         min-width: 20px;
         box-sizing: border-box;
         user-select: none;
-        margin: 5px 5px 5px 0
+        margin: 5px 5px 5px 0;
     }
 `
 const Row = styled.div`
