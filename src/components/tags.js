@@ -113,7 +113,6 @@ SampleSuggestion.sort((a, b) => 0.5 - Math.random())
 // To preserve original order
 const SuggestionIndexes = SampleSuggestion.reduce((acc, it, idx) => ({...acc, [it]: idx}), {});
 const sortSuggestion = (a, b) => (SuggestionIndexes[a] - SuggestionIndexes[b])
-// console.log(SampleSuggestion)
 
 const Find = (tag, tags, allTags=SampleSuggestion, max=maxLength) => {
     if(tag.length === 0) {

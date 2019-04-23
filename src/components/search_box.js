@@ -66,7 +66,6 @@ class SearchBox extends Component {
             this.props.keywordsOnchange(keywords)
             this.props.isFetchingOnchange(true)
             const blogs = (await axios.post("https://kt6xg5iln2.execute-api.ap-southeast-1.amazonaws.com/prod/query-keyword",{keywords:keywords})).data.body
-            // console.log(blogs)
             this.props.blogsOnchange(blogs)
         }catch(err){
             alert(err)

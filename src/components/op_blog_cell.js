@@ -103,7 +103,6 @@ const OPBlocgCell = (props) => (
                 </div>
                 <div className="title">{props.title}</div>
                 <div>
-                    {console.log('test',props.modifiedTime)}
                     <b>Created :</b> {moment(props.modifiedTime).startOf('day').fromNow()}
                 </div>
             </section>

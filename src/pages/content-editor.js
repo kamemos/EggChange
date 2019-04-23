@@ -188,7 +188,6 @@ class ContentEditor extends Component {
     onAddImage = (src) => {
         const { medium } = this.state;
         if (medium !== null) {
-            // console.log(src)
             const dom = medium.origElements;
             const img = document.createElement("img");
             img.setAttribute("src", src);
