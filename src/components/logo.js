@@ -72,6 +72,7 @@ div.word-full {
     img[alt=word1] {
         width: auto;
         height: ${p => p.size}px;
+        margin: 0px;
     }
 }
 &.vertical {

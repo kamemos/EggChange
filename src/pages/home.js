@@ -6,7 +6,9 @@ import connect from 'redux-connect-decorator';
 // Images
 import yolk from "../assets/Yolk.svg";
 import egg from "../assets/Egg-Gradient.svg";
-import { LastestPost, Logo } from '../components'
+import logo from "../assets/A.png";
+import text from "../assets/Welcome To Egg-Change A Knowledge Hub.png";
+import { LastestPost } from '../components';
 
 const Container = styled.section`
 display: flex;
@@ -18,8 +20,64 @@ img.yolk {
     max-width: 750px;
     width: 100vw;
     margin-top: -1px;
+    z-index: 51;
+}
+
+section.top {
     position: relative;
     z-index: 51;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* box-shadow: 0px 5px 5px #0002; */
+    img.yolk {
+        max-width: 750px;
+        width: 100vw;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    div.wrapper {
+        display: flex;
+        margin-top: 15vw;
+        justify-content: center;
+        box-sizing: border-box;
+        padding-bottom: 20px;
+        img[alt=logo] {
+            align-self: center;
+            max-width: 350px;
+            margin-right: 2vw;
+        }
+        img[alt=text] {
+            align-self: center;
+            max-width: 350px;
+        }
+        
+    }
+    @media screen and (min-width: 751px) {
+        max-height: 800px;
+    }
+    @media screen and (max-width: 750px) {
+        div.wrapper {
+            flex-direction: column;
+            margin-top: 20vw;
+            img[alt=logo] {
+                align-self: auto;
+                margin-right: 0;
+            }
+            img[alt=text] {
+                align-self: center;
+                max-width: 250px;
+            }
+        }
+    }
+    @media screen and (min-width: 1025px) {
+        div.wrapper {
+            margin-top: 150px;
+        }
+    }
 }
 
 img.egg {
@@ -113,15 +171,14 @@ class Home extends Component {
     render() {
         return (
             <Container>
-                <img className="yolk" src={yolk} alt="yolk" />
-                <LastestPost/>
-                <section className="welcome">
-                    <Logo.LogoCircle />
-                    <Logo.LogoWithWord isVertical={false} />
-                    <Logo.LogoWithWord isVertical={true} />
-                    <Logo.LogoWithName isVertical={false} />
-                    <Logo.LogoWithName isVertical={true} />
+                <section className="top">
+                    <img className="yolk" src={yolk} alt="yolk" />
+                    <div className="wrapper">
+                        <img src={logo} alt="logo" />
+                        <img src={text} alt="text" />
+                    </div>
                 </section>
+                <LastestPost/>
                 <img className="egg" src={egg} alt="egg" />
                 <section className="content">
                     Home

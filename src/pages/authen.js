@@ -23,7 +23,7 @@ const Container = styled.div`
     img.chick {
         height: 250px;
         width: 250px;
-        min-width: 220px
+        min-width: 220px;
         z-index: -1;
     }
     img.grass {

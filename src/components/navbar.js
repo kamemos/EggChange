@@ -37,8 +37,8 @@ width: 100vw;
     article {
         flex: 1;
         &.logo, &.menu-btn {
-            max-width: 100px;
-            min-width: 100px;
+            max-width: 200px;
+            min-width: 200px;
         }
         &.menu-btn {
             text-align: right;
@@ -62,6 +62,14 @@ article.menu {
 @media screen and (max-width: 1024px) {
     .small-no-show {
         display: none;
+    }
+    .top {
+        article {
+            &.logo, &.menu-btn {
+                max-width: 100px;
+                min-width: 100px;
+            }
+        }
     }
 }
 @media screen and (min-width: 1025px){
@@ -128,8 +136,15 @@ class Navbar extends Component {
             <>
                 <Container>
                     <section className="top">
-                        <article className="logo">
-                            <Logo.LogoWithName size={35} />
+                        <article className="logo small-no-show">
+                            <Link to='/'>
+                                <Logo.LogoWithName size={35} />
+                            </Link>
+                        </article>
+                        <article className="logo large-no-show">
+                            <Link to='/'>
+                                <Logo.Logo size={35} />
+                            </Link>
                         </article>
                         <article className="title">Title</article>
                         <article className="menu-btn">
@@ -158,7 +173,7 @@ class Navbar extends Component {
                     height: "50px",
                     width: "100vw",
                     boxShadow: "0px 2px 5px #0003",
-                    zIndex: "50"
+                    zIndex: "51"
                 }} />
             </>
         )

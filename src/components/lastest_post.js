@@ -10,6 +10,7 @@ const Container = styled.section`
     background: rgba(248,212,80,0.3);
     overflow-y: scroll;
     z-index: 5;
+    box-shadow: inset 0 0 10px #00000040;
 `
 const Title = styled.h3`
     margin-left: 20px;
